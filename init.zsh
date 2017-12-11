@@ -14,6 +14,6 @@ if zstyle -T ':prezto:module:fzf' system-key-bindings; then
 fi
 
 if zstyle -T ':prezto:module:fzf' git-key-bindings; then
-    source functions.sh
-    source key-binding.zsh
+    source ${0:h}/functions.sh
+    source ${0:h}/key-binding.zsh
 fi
