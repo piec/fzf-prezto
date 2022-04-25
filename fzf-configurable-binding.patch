@@ -1,20 +1,8 @@
-From 9cbfbe60c5e4aad3fb6beb0501c5363ca592c40a Mon Sep 17 00:00:00 2001
-From: Pierre Carru <pierre.carru@eshard.com>
-Date: Mon, 11 Dec 2017 12:48:11 +0100
-Subject: [PATCH] [zsh] let key bindings be customized through the standard
- zstyle mechanism
-
----
- shell/key-bindings.zsh | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git /usr/share/fzf/key-bindings.zsh /usr/share/fzf/key-bindings.zsh
-index c25368cb..3d8bdefa 100644
---- /usr/share/fzf/key-bindings.zsh
-+++ /usr/share/fzf/key-bindings.zsh
-@@ -26,6 +26,20 @@ __fzfcmd() {
-     echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
- }
+--- key-bindings.zsh	2022-04-25 10:19:45.881092078 +0200
++++ key-bindings.zsh	2022-04-25 10:19:26.441157873 +0200
+@@ -38,6 +38,20 @@
+ 
+ [[ -o interactive ]] || return 0
  
 +fzf_binding() {
 +  local -A default
@@ -30,36 +18,53 @@ index c25368cb..3d8bdefa 100644
 +  echo -n "$binding"
 +}
 +
- fzf-file-widget() {
-   LBUFFER="${LBUFFER}$(__fsel)"
-   local ret=$?
-@@ -34,7 +48,7 @@ fzf-file-widget() {
+ # CTRL-T - Paste the selected file path(s) into the command line
+ __fsel() {
+   local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
+@@ -65,10 +79,10 @@
+   zle reset-prompt
    return $ret
  }
- zle     -N   fzf-file-widget
--bindkey '^T' fzf-file-widget
-+bindkey "$(fzf_binding file)" fzf-file-widget
+-zle     -N            fzf-file-widget
+-bindkey -M emacs '^T' fzf-file-widget
+-bindkey -M vicmd '^T' fzf-file-widget
+-bindkey -M viins '^T' fzf-file-widget
++zle     -N                             fzf-file-widget
++bindkey -M emacs "$(fzf_binding file)" fzf-file-widget
++bindkey -M vicmd "$(fzf_binding file)" fzf-file-widget
++bindkey -M viins "$(fzf_binding file)" fzf-file-widget
  
- # Ensure precmds are run after cd
- fzf-redraw-prompt() {
-@@ -63,7 +77,7 @@ fzf-cd-widget() {
+ # ALT-C - cd into the selected directory
+ fzf-cd-widget() {
+@@ -88,10 +102,10 @@
+   zle reset-prompt
    return $ret
  }
- zle     -N    fzf-cd-widget
--bindkey '\ec' fzf-cd-widget
-+bindkey "$(fzf_binding cd)" fzf-cd-widget
+-zle     -N             fzf-cd-widget
+-bindkey -M emacs '\ec' fzf-cd-widget
+-bindkey -M vicmd '\ec' fzf-cd-widget
+-bindkey -M viins '\ec' fzf-cd-widget
++zle     -N                           fzf-cd-widget
++bindkey -M emacs "$(fzf_binding cd)" fzf-cd-widget
++bindkey -M vicmd "$(fzf_binding cd)" fzf-cd-widget
++bindkey -M viins "$(fzf_binding cd)" fzf-cd-widget
  
  # CTRL-R - Paste the selected command from history into the command line
  fzf-history-widget() {
-@@ -82,7 +96,10 @@ fzf-history-widget() {
-   typeset -f zle-line-init >/dev/null && zle zle-line-init
+@@ -109,10 +123,12 @@
+   zle reset-prompt
    return $ret
  }
-+
- zle     -N   fzf-history-widget
--bindkey '^R' fzf-history-widget
-+bindkey "$(fzf_binding history)" fzf-history-widget
+-zle     -N            fzf-history-widget
+-bindkey -M emacs '^R' fzf-history-widget
+-bindkey -M vicmd '^R' fzf-history-widget
+-bindkey -M viins '^R' fzf-history-widget
++zle     -N                                fzf-history-widget
++bindkey -M emacs "$(fzf_binding history)" fzf-history-widget
++bindkey -M vicmd "$(fzf_binding history)" fzf-history-widget
++bindkey -M viins "$(fzf_binding history)" fzf-history-widget
 +
 +unset -f fzf_binding
  
- fi
+ } always {
+   eval $__fzf_key_bindings_options
