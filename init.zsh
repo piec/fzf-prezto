@@ -10,6 +10,8 @@ fi
 if zstyle -T ':prezto:module:fzf' system-key-bindings; then
     if [[ -r /usr/share/fzf/key-bindings.zsh ]]; then
         source /usr/share/fzf/key-bindings.zsh
+    elif [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+        source /usr/share/doc/fzf/examples/key-bindings.zsh
     fi
 fi
 
